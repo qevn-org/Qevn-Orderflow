@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QEVN Orderflow - Premium Enterprise Suite</title>
+  <meta name="description" content="A premium, enterprise-grade Manufacturing, Sales, and Inventory Management dashboard.">
+  
+  <!-- Inter Font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- CDNs for Icons & Charts -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <!-- Local CSS Styles -->
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/responsive.css">
+
+  <!-- Local JS Scripts (Deferred) -->
+  <script src="js/dummyData.js" defer></script>
+  <script src="js/utils.js" defer></script>
+  <script src="js/dashboard.js" defer></script>
+  <script src="js/orders.js" defer></script>
+  <script src="js/customers.js" defer></script>
+  <script src="js/salesTeam.js" defer></script>
+  <script src="js/products.js" defer></script>
+  <script src="js/inventory.js" defer></script>
+  <script src="js/manufacturing.js" defer></script>
+  <script src="js/warehouse.js" defer></script>
+  <script src="js/dispatch.js" defer></script>
+  <script src="js/billing.js" defer></script>
+  <script src="js/analytics.js" defer></script>
+  <script src="js/settings.js" defer></script>
+  <script src="js/app.js" defer></script>
+</head>
+<body>
+
+  <!-- ==================== TOAST CONTAINER ==================== -->
+  <div id="toast-container" class="toast-container"></div>
+
+  <!-- ==================== LOGIN SCREEN ==================== -->
+  <div id="login-screen" class="login-screen">
+    <div class="login-background"></div>
+    <div class="login-card">
+      <div class="login-logo-container">
+        <div class="login-logo">
+          <i data-lucide="layers" class="logo-icon"></i>
+        </div>
+        <h2>QEVN <span class="logo-accent">Orderflow</span></h2>
+        <p class="login-subtitle">Manufacturing & Operations Suite</p>
+      </div>
+
+      <form id="login-form" class="login-form">
+        <div class="form-group">
+          <label for="login-email">Email Address</label>
+          <div class="input-with-icon">
+            <i data-lucide="mail"></i>
+            <input type="email" id="login-email" required placeholder="admin@qevn.in" value="admin@qevn.in">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="login-password">Password</label>
+          <div class="input-with-icon">
+            <i data-lucide="lock"></i>
+            <input type="password" id="login-password" required placeholder="••••••••" value="admin123">
+          </div>
+        </div>
+
+        <div class="login-options">
+          <label class="checkbox-container">
+            <input type="checkbox" checked>
+            <span class="checkmark"></span>
+            Remember me
+          </label>
+          <a href="#" class="forgot-pwd" id="forgot-password-btn">Forgot password?</a>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-block btn-login" id="login-submit-btn">
+          <span>Sign In</span>
+          <i data-lucide="arrow-right"></i>
+        </button>
+      </form>
+
+      <div class="login-divider"><span>Demo Credentials</span></div>
+      <div class="demo-credentials-info">
+        <p>Email: <code>admin@qevn.in</code></p>
+        <p>Password: <code>admin123</code></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== MAIN APP CONTAINER ==================== -->
+  <div id="app-container" class="app-container hidden">
+    
+    <!-- LEFT SIDEBAR -->
+    <aside id="sidebar" class="sidebar">
+      <div class="sidebar-header">
+        <div class="sidebar-logo">
+          <i data-lucide="layers" class="logo-icon"></i>
+          <span class="brand-text">QEVN <span class="accent-text">Orderflow</span></span>
+        </div>
+        <button id="sidebar-toggle-btn" class="sidebar-toggle-btn" aria-label="Toggle Sidebar">
+          <i data-lucide="chevron-left" id="toggle-icon"></i>
+        </button>
+      </div>
+
+      <div class="sidebar-user">
+        <div class="avatar" id="sidebar-avatar">O</div>
+        <div class="user-info">
+          <h4 id="user-name">Owner User</h4>
+          <span class="user-role-badge">Owner</span>
+        </div>
+      </div>
+
+      <nav class="sidebar-nav">
+        <ul>
+          <li>
+            <a href="#" class="nav-link active" data-view="dashboard" id="nav-dashboard">
+              <i data-lucide="layout-dashboard"></i>
+              <span>Dashboard</span>
+            </a>
+          </li>
+          <li class="nav-section-title">Sales & Customers</li>
+          <li>
+            <a href="#" class="nav-link" data-view="orders" id="nav-orders">
+              <i data-lucide="shopping-cart"></i>
+              <span>Orders</span>
+            </a>
+          </li>
+          <li>
+            <a href="#" class="nav-link" data-view="customers" id="nav-customers">
+              <i data-lucide="users"></i>
+              <span>Customers</span>
+            </a>
+          </li>
+          <li>
+            <a href="#" class="nav-link" data-view="sales-team" id="nav-salesteam">
+              <i data-lucide="award"></i>
+              <span>Sales Team</span>
+            </a>
+          </li>
+          <li class="nav-section-title">Products & Inventory</li>
+          <li>
+            <a href="#" class="nav-link" data-view="products" id="nav-products">
+              <i data-lucide="box"></i>
+              <span>Products</span>
+            </a>
+          </li>
+          <li>
+            <a href="#" class="nav-link" data-view="inventory" id="nav-inventory">
+              <i data-lucide="package"></i>
+              <span>Inventory</span>
+            </a>
+          </li>
+          <li class="nav-section-title">Operations & Logistics</li>
+          <li>
+            <a href="#" class="nav-link" data-view="manufacturing" id="nav-manufacturing">
+              <i data-lucide="cpu"></i>
+              <span>Manufacturing</span>
+            </a>
+          </li>
+          <li>
+            <a href="#" class="nav-link" data-view="warehouse" id="nav-warehouse">
+              <i data-lucide="warehouse"></i>
+              <span>Warehouse</span>
+            </a>
+          </li>
+          <li>
+            <a href="#" class="nav-link" data-view="dispatch" id="nav-dispatch">
+              <i data-lucide="truck"></i>
+              <span>Dispatch</span>
+            </a>
+          </li>
+          <li class="nav-section-title">Finance & Reports</li>
+          <li>
+            <a href="#" class="nav-link" data-view="billing" id="nav-billing">
+              <i data-lucide="receipt"></i>
+              <span>Invoices</span>
+            </a>
+          </li>
+          <li>
+            <a href="#" class="nav-link" data-view="analytics" id="nav-analytics">
+              <i data-lucide="bar-chart-2"></i>
+              <span>Analytics</span>
+            </a>
+          </li>
+          <li>
+            <a href="#" class="nav-link" data-view="reports" id="nav-reports">
+              <i data-lucide="file-text"></i>
+              <span>Reports</span>
+            </a>
+          </li>
+          <li class="nav-section-title">Configuration</li>
+          <li>
+            <a href="#" class="nav-link" data-view="settings" id="nav-settings">
+              <i data-lucide="settings"></i>
+              <span>Settings</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+
+      <div class="sidebar-footer">
+        <button class="btn-logout" id="logout-btn">
+          <i data-lucide="log-out"></i>
+          <span>Logout</span>
+        </button>
+      </div>
+    </aside>
+
+    <!-- RIGHT WRAPPER FOR HEADER + MAIN VIEWPORT -->
+    <div class="app-content-wrapper">
+      
+      <!-- TOP NAV / HEADER -->
+      <header class="top-header">
+        <div class="header-left">
+          <!-- Mobile Sidebar Toggle -->
+          <button id="mobile-menu-btn" class="mobile-menu-btn">
+            <i data-lucide="menu"></i>
+          </button>
+          
+          <div class="breadcrumb">
+            <span class="breadcrumb-item" id="bc-parent">Main</span>
+            <i data-lucide="chevron-right" class="bc-divider"></i>
+            <span class="breadcrumb-item active" id="bc-child">Dashboard</span>
+          </div>
+        </div>
+
+        <div class="header-right">
+          <!-- Global Search trigger button -->
+          <button class="search-trigger" id="global-search-trigger" title="Global Search (Ctrl + K)">
+            <i data-lucide="search"></i>
+            <span>Search...</span>
+            <kbd class="shortcut-badge">Ctrl K</kbd>
+          </button>
+
+          <!-- Notifications trigger -->
+          <div class="header-action-wrapper">
+            <button class="header-action-btn" id="notif-btn" title="Notification Center">
+              <i data-lucide="bell"></i>
+              <span class="badge-dot hidden" id="notif-badge-dot"></span>
+            </button>
+            
+            <!-- Notifications Dropdown -->
+            <div class="header-dropdown notif-dropdown hidden" id="notif-dropdown">
+              <div class="dropdown-header">
+                <h3>Notifications</h3>
+                <button class="btn-text" id="clear-notif-btn">Clear All</button>
+              </div>
+              <div class="dropdown-list" id="notif-list">
+                <!-- Injected programmatically -->
+                <div class="empty-state-dropdown">
+                  <i data-lucide="bell-off"></i>
+                  <p>All caught up!</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Profile Info / Role switcher -->
+          <div class="header-action-wrapper">
+            <button class="profile-trigger-btn" id="profile-dropdown-btn">
+              <div class="avatar avatar-sm">O</div>
+              <i data-lucide="chevron-down" class="chevron"></i>
+            </button>
+            
+            <!-- Role Selection Menu -->
+            <div class="header-dropdown profile-dropdown hidden" id="profile-dropdown">
+              <div class="dropdown-header">
+                <h4 id="profile-dropdown-name">Owner User</h4>
+                <p id="profile-dropdown-email">admin@qevn.in</p>
+              </div>
+              <div class="dropdown-divider"></div>
+              <div class="role-selector-title">Switch Active Demo Role:</div>
+              <ul class="role-list">
+                <li><button class="role-btn active" data-role="Owner">Owner</button></li>
+                <li><button class="role-btn" data-role="Admin">Admin</button></li>
+                <li><button class="role-btn" data-role="Sales Manager">Sales Manager</button></li>
+                <li><button class="role-btn" data-role="Sales Executive">Sales Executive</button></li>
+                <li><button class="role-btn" data-role="Factory Manager">Factory Manager</button></li>
+                <li><button class="role-btn" data-role="Warehouse Manager">Warehouse Manager</button></li>
+                <li><button class="role-btn" data-role="Accountant">Accountant</button></li>
+                <li><button class="role-btn" data-role="Dispatch Manager">Dispatch Manager</button></li>
+              </ul>
+              <div class="dropdown-divider"></div>
+              <button class="dropdown-item logout-dropdown-btn" id="dropdown-logout-btn">
+                <i data-lucide="log-out"></i> Logout
+              </button>
+            </div>
+          </div>
+
+        </div>
+      </header>
+
+      <!-- MAIN CONTENT VIEWPORT -->
+      <main id="main-viewport" class="main-viewport">
+        
+        <!-- Dashboard View -->
+        <section id="view-dashboard" class="view-panel active">
+          <!-- Populated dynamically -->
+        </section>
+
+        <!-- Orders View -->
+        <section id="view-orders" class="view-panel">
+          <!-- Populated dynamically -->
+        </section>
+
+        <!-- Customers View -->
+        <section id="view-customers" class="view-panel">
+          <!-- Populated dynamically -->
+        </section>
+
+        <!-- Sales Team View -->
+        <section id="view-sales-team" class="view-panel">
+          <!-- Populated dynamically -->
+        </section>
+
+        <!-- Products View -->
+        <section id="view-products" class="view-panel">
+          <!-- Populated dynamically -->
+        </section>
+
+        <!-- Inventory View -->
+        <section id="view-inventory" class="view-panel">
+          <!-- Populated dynamically -->
+        </section>
+
+        <!-- Manufacturing View -->
+        <section id="view-manufacturing" class="view-panel">
+          <!-- Populated dynamically -->
+        </section>
+
+        <!-- Warehouse View -->
+        <section id="view-warehouse" class="view-panel">
+          <!-- Populated dynamically -->
+        </section>
+
+        <!-- Dispatch View -->
+        <section id="view-dispatch" class="view-panel">
+          <!-- Populated dynamically -->
+        </section>
+
+        <!-- Invoices View -->
+        <section id="view-billing" class="view-panel">
+          <!-- Populated dynamically -->
+        </section>
+
+        <!-- Analytics View -->
+        <section id="view-analytics" class="view-panel">
+          <!-- Populated dynamically -->
+        </section>
+
+        <!-- Reports View -->
+        <section id="view-reports" class="view-panel">
+          <!-- Populated dynamically -->
+        </section>
+
+        <!-- Settings View -->
+        <section id="view-settings" class="view-panel">
+          <!-- Populated dynamically -->
+        </section>
+
+      </main>
+
+    </div>
+  </div>
+
+  <!-- ==================== MODALS & OVERLAYS ==================== -->
+  
+  <!-- Backdrop for modals -->
+  <div id="modal-backdrop" class="modal-backdrop hidden"></div>
+
+  <!-- 1. Command Palette Modal (Ctrl + K) -->
+  <div id="command-palette-modal" class="modal command-palette-modal hidden">
+    <div class="command-palette-search">
+      <i data-lucide="search" class="search-icon"></i>
+      <input type="text" id="command-palette-input" placeholder="Search orders, customers, products, invoices... (Esc to close)" autocomplete="off">
+    </div>
+    <div class="command-palette-results" id="command-palette-results">
+      <!-- Search results loaded dynamically -->
+    </div>
+    <div class="command-palette-footer">
+      <span><kbd>↑↓</kbd> to navigate</span>
+      <span><kbd>Enter</kbd> to select</span>
+      <span><kbd>Esc</kbd> to close</span>
+    </div>
+  </div>
+
+  <!-- 2. Order Wizard Stepper Modal -->
+  <div id="order-wizard-modal" class="modal wizard-modal hidden">
+    <div class="modal-header">
+      <h2>Create New Sales Order</h2>
+      <button class="modal-close-btn" id="wizard-close-btn">&times;</button>
+    </div>
+    <div class="modal-body">
+      <!-- Stepper Progress -->
+      <div class="stepper">
+        <div class="step active" data-step="1">
+          <div class="step-num">1</div>
+          <span class="step-label">Customer</span>
+        </div>
+        <div class="step-line"></div>
+        <div class="step" data-step="2">
+          <div class="step-num">2</div>
+          <span class="step-label">Products</span>
+        </div>
+        <div class="step-line"></div>
+        <div class="step" data-step="3">
+          <div class="step-num">3</div>
+          <span class="step-label">Quantity</span>
+        </div>
+        <div class="step-line"></div>
+        <div class="step" data-step="4">
+          <div class="step-num">4</div>
+          <span class="step-label">Review</span>
+        </div>
+      </div>
+
+      <div class="wizard-content">
+        <!-- Step 1: Select Customer -->
+        <div class="wizard-step-panel active" id="wizard-step-1">
+          <h3>Select Customer</h3>
+          <p class="wizard-description">Choose a customer from the registry to assign this sales order.</p>
+          <div class="form-group">
+            <label for="wizard-customer-select">Customer Name</label>
+            <select id="wizard-customer-select" class="form-control select-searchable" required>
+              <option value="" disabled selected>Select a customer...</option>
+              <!-- Loaded programmatically -->
+            </select>
+          </div>
+          <div id="wizard-customer-details-card" class="details-card-compact hidden">
+            <!-- Small customer info box -->
+          </div>
+        </div>
+
+        <!-- Step 2: Select Products -->
+        <div class="wizard-step-panel" id="wizard-step-2">
+          <h3>Select Products</h3>
+          <p class="wizard-description">Add products to the sales order catalog.</p>
+          <div class="products-selection-layout">
+            <div class="form-group select-prod-group">
+              <label for="wizard-product-select">Select Product</label>
+              <select id="wizard-product-select" class="form-control">
+                <option value="" disabled selected>Choose a product...</option>
+                <!-- Loaded programmatically -->
+              </select>
+            </div>
+            <button type="button" class="btn btn-secondary" id="wizard-add-product-btn">
+              <i data-lucide="plus"></i> Add Item
+            </button>
+          </div>
+
+          <!-- Added items grid -->
+          <div class="added-items-table-wrapper">
+            <table class="added-items-table">
+              <thead>
+                <tr>
+                  <th>Product</th>
+                  <th>SKU</th>
+                  <th>Unit Price</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="wizard-added-products-list">
+                <tr class="empty-row">
+                  <td colspan="4" class="text-center text-muted">No products added yet.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Step 3: Quantities and adjustments -->
+        <div class="wizard-step-panel" id="wizard-step-3">
+          <h3>Set Quantities & Discounts</h3>
+          <p class="wizard-description">Configure the order quantities, discounts, and warehouse sources.</p>
+          <div class="quantity-items-list" id="wizard-quantity-list">
+            <!-- Loaded dynamically with inputs for quantity, discount and warehouse -->
+          </div>
+        </div>
+
+        <!-- Step 4: Review Order -->
+        <div class="wizard-step-panel" id="wizard-step-4">
+          <h3>Review & Finalize Order</h3>
+          <p class="wizard-description">Verify details, taxes, and prices before submitting to manufacturing & invoicing.</p>
+          <div class="review-layout">
+            <div class="review-meta">
+              <div class="meta-block">
+                <label>Customer Details</label>
+                <div id="wizard-review-customer" class="val">Customer Name</div>
+              </div>
+              <div class="meta-block">
+                <label>Salesperson</label>
+                <div id="wizard-review-salesperson" class="val">Active User</div>
+              </div>
+              <div class="meta-block">
+                <label>Priority</label>
+                <select id="wizard-review-priority" class="form-control form-control-sm">
+                  <option value="Medium">Medium Priority</option>
+                  <option value="High">High Priority</option>
+                  <option value="Low">Low Priority</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="review-items">
+              <label>Items Summary</label>
+              <div class="review-table-wrapper">
+                <table class="review-table">
+                  <thead>
+                    <tr>
+                      <th>Product</th>
+                      <th>Qty</th>
+                      <th>Unit Price</th>
+                      <th>Discount</th>
+                      <th>GST (18%)</th>
+                      <th>Total</th>
+                    </tr>
+                  </thead>
+                  <tbody id="wizard-review-items-body">
+                    <!-- Loaded dynamically -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <div class="review-summary-totals">
+              <div class="totals-row">
+                <span>Subtotal:</span>
+                <span id="wizard-total-subtotal">$0.00</span>
+              </div>
+              <div class="totals-row">
+                <span>Discount:</span>
+                <span id="wizard-total-discount">-$0.00</span>
+              </div>
+              <div class="totals-row">
+                <span>GST (18%):</span>
+                <span id="wizard-total-gst">$0.00</span>
+              </div>
+              <div class="totals-row grand-total-row">
+                <span>Grand Total:</span>
+                <span id="wizard-total-grand">$0.00</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" id="wizard-prev-btn" disabled>Back</button>
+      <button type="button" class="btn btn-primary" id="wizard-next-btn">Next</button>
+    </div>
+  </div>
+
+  <!-- 3. General Detail Modal (Orders, Customers, Products, Invoices, Delete Confirmation) -->
+  <div id="detail-modal" class="modal detail-modal hidden">
+    <div class="modal-header">
+      <h2 id="detail-modal-title">Details View</h2>
+      <button class="modal-close-btn" id="detail-modal-close-btn">&times;</button>
+    </div>
+    <div class="modal-body" id="detail-modal-body">
+      <!-- Injected programmatically based on entity type -->
+    </div>
+    <div class="modal-footer" id="detail-modal-footer">
+      <!-- Actions buttons programmatically generated -->
+    </div>
+  </div>
+
+</body>
+</html>

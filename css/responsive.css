@@ -1,0 +1,191 @@
+/* ==================== TABLET & SMALL LAPTOP LAYOUTS ==================== */
+@media (max-width: 1024px) {
+  :root {
+    --sidebar-width: 220px;
+  }
+  
+  .bento-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  /* Reset spans that might overflow 2 cols */
+  .span-3, .span-4 {
+    grid-column: span 2;
+  }
+  
+  .grid-cols-4 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* ==================== MOBILE SCREEN LAYOUTS ==================== */
+@media (max-width: 768px) {
+  :root {
+    --header-height: 60px;
+  }
+  
+  body {
+    font-size: 0.875rem;
+  }
+
+  .main-viewport {
+    padding: 16px;
+  }
+  
+  .bento-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  
+  .span-2, .span-3, .span-4, .row-span-2 {
+    grid-column: span 1;
+    grid-row: span 1;
+  }
+
+  .grid-cols-2, .grid-cols-3, .grid-cols-4 {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  
+  /* Hide breadcrumb parent on small screens */
+  #bc-parent, .bc-divider {
+    display: none;
+  }
+  
+  /* Collapsible Sidebar Overlay for Mobile */
+  .sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: var(--sidebar-width);
+    transform: translateX(-100%);
+    transition: transform var(--transition-smooth);
+    box-shadow: var(--shadow-lg);
+    background-color: var(--card-bg);
+  }
+  
+  .sidebar.mobile-show {
+    transform: translateX(0);
+  }
+  
+  .sidebar-toggle-btn {
+    display: none;
+  }
+  
+  .mobile-menu-btn {
+    display: flex;
+  }
+  
+  /* Adjust search header widget on mobile */
+  .search-trigger {
+    width: 40px;
+    padding: 8px;
+    justify-content: center;
+  }
+  
+  .search-trigger span,
+  .search-trigger kbd {
+    display: none;
+  }
+  
+  /* Modals adapt to screen size */
+  .modal {
+    width: 96%;
+    max-height: 90vh;
+    border-radius: 16px;
+  }
+  
+  .modal-body {
+    padding: 16px;
+  }
+  
+  .modal-footer {
+    padding: 12px 16px;
+  }
+  
+  /* Table container scroll behavior */
+  .table-container {
+    overflow-x: auto;
+  }
+  
+  .custom-table {
+    min-width: 700px; /* Force scrollbar inside container */
+  }
+
+  .table-header-toolbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .table-search {
+    max-width: 100%;
+  }
+
+  .table-filters {
+    justify-content: space-between;
+  }
+  
+  /* Wizard components adjustments */
+  .stepper {
+    padding: 0;
+    margin-bottom: 24px;
+  }
+  
+  .step-label {
+    display: none; /* Hide labels, show only numbers */
+  }
+
+  .qty-item-row {
+    grid-template-columns: 1fr;
+    gap: 8px;
+    padding: 12px;
+  }
+
+  .review-meta {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .review-summary-totals {
+    width: 100%;
+    align-self: auto;
+  }
+  
+  /* Stats widgets grid */
+  .widget-weather-calendar {
+    flex-direction: column;
+    height: auto;
+  }
+  
+  .widget-calendar-side, .widget-weather-side {
+    width: 100%;
+    padding: 16px;
+  }
+}
+
+/* ==================== HIGH DENSITY / SMALL DEVICE POLISH ==================== */
+@media (max-width: 480px) {
+  .login-card {
+    padding: 24px 16px;
+    max-width: 92%;
+  }
+
+  .login-logo-container {
+    margin-bottom: 20px;
+  }
+
+  .header-right {
+    gap: 8px;
+  }
+
+  .notif-dropdown {
+    width: 280px;
+    right: -40px;
+  }
+
+  .profile-dropdown {
+    width: 220px;
+    right: 0;
+  }
+}
